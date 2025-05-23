@@ -28,23 +28,27 @@ const getCoupleNodes = (store: Store, target: Node): readonly Node[] => {
 const excludeRel =
   (target: Node) =>
   (rel: Relation): boolean =>
-    rel.id !== target.id;
+    rel?.id !== target?.id;
 
 export const getSpouseNodesFunc = (store: Store) => {
   const toNode = relToNode(store);
 
   return (parents: readonly Node[]): SpousesNodes => {
     let middle: readonly Node[] = parents;
-
-    if (middle.length !== NODES_IN_COUPLE) middle = getCoupleNodes(store, middle[0]!);
+    
+    // if (middle.length !== NODES_IN_COUPLE) middle = getCoupleNodes(store, middle[0]!);
+    // console.log('spouse-node1', middle)
 
     const result: SpousesNodes = { left: [], middle, right: [] };
 
-    if (middle.length === NODES_IN_COUPLE) {
+    // if (middle.length === NODES_IN_COUPLE) {
       const [first, second] = middle as [Node, Node];
-      result.left = first.spouses.filter(excludeRel(second)).map(toNode);
-      result.right = second.spouses.filter(excludeRel(first)).map(toNode);
-    }
+      result.left = first.spouses.map(node => {
+        // console.log('node', node)
+        return node
+      }).filter(excludeRel(second)).map(toNode);
+      // result.right = second.spouses.filter(excludeRel(first)).map(toNode);
+    // }
 
     return result;
   };

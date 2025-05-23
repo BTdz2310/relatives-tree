@@ -4,8 +4,8 @@ import { inAscOrder, max, min, withId, withIds } from '../utils';
 import { HALF_SIZE, NODES_IN_COUPLE, SIZE } from '../constants';
 import { Connector, Family, FamilyType, Unit } from '../types';
 
-export const children = (families: readonly Family[]): readonly Connector[] =>
-  families
+export const children = (families: readonly Family[]): readonly Connector[] => {
+  const connectorsC = families
     .filter(withType(FamilyType.root, FamilyType.child))
     .reduce<Connector[]>((connectors, family) => {
       const parent: Unit | undefined = family.parents[0]!;
@@ -49,12 +49,13 @@ export const children = (families: readonly Family[]): readonly Connector[] =>
           });
         }
       });
-
+      // console.log('con', structuredClone(connectors).length)
       // horizontal above children
       if (positions.length > 1) connectors.push([min(positions), mY, max(positions), mY]);
       // horizontal between parent(s) and child
       else if (positions.length === 1 && pX !== positions[0])
         connectors.push([Math.min(pX, positions[0]!), mY, Math.max(pX, positions[0]!), mY]);
-
       return connectors;
-    }, []);
+    }, [])
+    return connectorsC
+};

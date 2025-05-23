@@ -5,6 +5,7 @@ import { newFamily } from '../utils/family';
 import { setDefaultUnitShift } from '../utils/setDefaultUnitShift';
 import { createChildUnitsFunc } from '../utils/createChildUnitsFunc';
 import { Family, FamilyType, Node, Relation, Unit } from '../types';
+import { getExtendedNodes } from '../utils/getExtendedNodes';
 
 const hasSameRelation =
   (node: Node | undefined) =>
@@ -17,8 +18,10 @@ const getChildUnitsFunc = (store: Store) => {
 
   return (familyId: number, parents: readonly Node[]): readonly Unit[] => {
     const [first, second] = parents as [Node, Node | undefined];
+    const nodes = getExtendedNodes(Array.from(store.families.values())).map(node => node.id)
 
     return first.children
+      .filter(child => !nodes.includes(child.id))
       .filter(hasSameRelation(second))
       .flatMap((rel) => createChildUnits(familyId, toNode(rel)));
   };

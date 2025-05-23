@@ -20,7 +20,9 @@ export const inChildDirection = (store: Store): Store => {
     while (stack.length) {
       const parentUnit = stack.pop()!;
       const family = createFamily(nodeIds(parentUnit), FamilyType.child);
-
+      if (family.children.length === 0) {
+        continue
+      }
       updateFamily(family, parentUnit);
       arrangeFamilies(family);
 
