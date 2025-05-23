@@ -1,7 +1,7 @@
 import type Store from '../store';
-import { NODES_IN_COUPLE } from '../constants';
-import { Node, Relation, RelType } from '../types';
-import { byGender, relToNode, withRelType } from './index';
+// import { NODES_IN_COUPLE } from '../constants';
+import { Node, Relation } from '../types';
+import { relToNode } from './index';
 
 type SpousesNodes = {
   left: readonly Node[];
@@ -9,21 +9,21 @@ type SpousesNodes = {
   right: readonly Node[];
 };
 
-const inDescOrderOfChildCount = (a: Node, b: Node): number => b.children.length - a.children.length;
+// const inDescOrderOfChildCount = (a: Node, b: Node): number => b.children.length - a.children.length;
 
-const getSpouse = (store: Store, spouses: readonly Relation[]): Node | undefined => {
-  const toNode = relToNode(store);
-  const married = spouses.find(withRelType(RelType.married));
-  if (married) return toNode(married);
-  if (spouses.length >= 1) return spouses.map(toNode).sort(inDescOrderOfChildCount)[0];
-  return;
-};
+// const getSpouse = (store: Store, spouses: readonly Relation[]): Node | undefined => {
+//   const toNode = relToNode(store);
+//   const married = spouses.find(withRelType(RelType.married));
+//   if (married) return toNode(married);
+//   if (spouses.length >= 1) return spouses.map(toNode).sort(inDescOrderOfChildCount)[0];
+//   return;
+// };
 
-const getCoupleNodes = (store: Store, target: Node): readonly Node[] => {
-  return [target, getSpouse(store, target.spouses)]
-    .filter((node: unknown): node is Node => Boolean(node))
-    .sort(byGender(store.root.gender));
-};
+// const getCoupleNodes = (store: Store, target: Node): readonly Node[] => {
+//   return [target, getSpouse(store, target.spouses)]
+//     .filter((node: unknown): node is Node => Boolean(node))
+//     .sort(byGender(store.root.gender));
+// };
 
 const excludeRel =
   (target: Node) =>

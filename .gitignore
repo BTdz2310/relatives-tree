@@ -1,7 +1,5 @@
 /node_modules
 /benchmarks/lib
-/lib
 /.cache
-/dist
 .idea
 .DS_Store
